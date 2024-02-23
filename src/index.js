@@ -1,34 +1,45 @@
 'use strict';
 
-function DepartmentSalary(...args) {
-  const salary = [];
+function MyArr(...args) {
+  //   this.push = function (item) {
+  //     this[this.length] = item;
+  //     return ++this.length;
+  //   };
   for (let i = 0; i < args.length; i++) {
-    salary.push(args[i]);
+    this.push(args[i]);
   }
-  return salary;
 }
 
-DepartmentSalary.prototype = new DepartmentSalaryProto();
+MyArr.prototype = new MyArrProto();
 
-let myDepartmentSalary = new DepartmentSalary(
-  123,
-  345,
-  346,
-  457,
-  345,
-  2354,
-  756,
-  23
+let arr1 = new MyArr(1, 2, 3, 4, 5);
+
+// console.log(arr1);
+
+function MyArrProto() {
+  this.length = 0;
+  this.push = function (item) {
+    this[this.length] = item;
+    return ++this.length;
+  };
+  this.reduceRight = function (fn, accum) {
+    let accumulator = accum;
+    if (!accum) {
+      accumulator = this[this.length - 1];
+      for (let i = this.length - 2; i >= 0; i--) {
+        accumulator = fn(accumulator, this[i], i, this);
+      }
+    } else {
+      for (let i = this.length - 1; i >= 0; i--) {
+        accumulator = fn(accumulator, this[i], i, this);
+      }
+    }
+    return accumulator;
+  };
+}
+
+const result = arr1.reduceRight(
+  (accumulator, currentNumber) => accumulator + currentNumber
 );
 
-// console.log(ctaiSalary);
-function DepartmentSalaryProto() {
-    this.myReduce = function(){
-        let s = 0;
-        for (let i = 0; i < this.myReduce; i++){
-            s = s + this[i];
-        }return s;
-    } 
-}
-
-console.log(myDepartmentSalary.myReduce())
+console.log(result);
